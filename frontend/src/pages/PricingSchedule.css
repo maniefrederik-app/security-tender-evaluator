@@ -1,0 +1,579 @@
+/* ── PRICING SCHEDULE — SCREEN STYLES ───────────────────────────── */
+
+.ps-shell {
+  min-height: 100vh;
+  background: #e8ecf4;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* ── Toolbar ── */
+.ps-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #d0d7e8;
+  padding: 10px 24px;
+  flex-wrap: wrap;
+}
+
+.ps-toolbar-left  { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.ps-toolbar-right { display: flex; align-items: center; gap: 8px;  flex-wrap: wrap; }
+.ps-toolbar-icon  { color: var(--primary, #1a2b8c); flex-shrink: 0; }
+.ps-toolbar-title { font-size: 1.05rem; font-weight: 700; color: var(--primary, #1a2b8c); margin: 0; }
+
+.ps-annexure-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #1a2b8c;
+  color: white;
+  padding: 3px 9px;
+  border-radius: 5px;
+}
+
+/* ── Mode selector bar ── */
+.ps-mode-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 24px;
+  background: white;
+  border-bottom: 1.5px solid #e0e5ef;
+  flex-wrap: wrap;
+}
+
+.ps-mode-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ps-mode-toggle {
+  display: flex;
+  background: #f0f2f8;
+  border-radius: 9px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.ps-mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.ps-mode-btn.active {
+  background: white;
+  color: #1a2b8c;
+  box-shadow: 0 2px 8px rgba(26,43,140,0.12);
+}
+.ps-mode-btn:hover:not(.active) { color: #374151; }
+
+.ps-bidder-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ps-bidder-icon  { color: #6b7280; }
+.ps-bidder-label { font-size: 0.8rem; font-weight: 600; color: #4b5675; white-space: nowrap; }
+
+/* Notices */
+.ps-bidder-notice {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  color: #0e9f6e;
+  font-weight: 500;
+  background: rgba(14,159,110,0.08);
+  padding: 6px 12px;
+  border-radius: 7px;
+  border: 1px solid rgba(14,159,110,0.2);
+}
+
+.ps-admin-notice {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  color: #c2410c;
+  font-weight: 600;
+  background: rgba(239,68,68,0.07);
+  padding: 6px 12px;
+  border-radius: 7px;
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+.ps-lock-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  padding: 3px 9px;
+  border: 1px solid rgba(239,68,68,0.4);
+  border-radius: 5px;
+  background: transparent;
+  color: #c2410c;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.ps-lock-btn:hover { background: rgba(239,68,68,0.12); }
+
+/* Admin header ref */
+.ps-ref-admin {
+  color: #f97316 !important;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* Bidder "for" ref in cover */
+.ps-ref-bidder {
+  color: rgba(255,255,255,0.75) !important;
+  font-style: italic;
+  font-size: 0.82rem;
+  margin-top: 2px;
+}
+
+/* ── Bidder Company Name Banner ── */
+.ps-bidder-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: linear-gradient(90deg, #059669 0%, #0e9f6e 60%, #10b981 100%);
+  padding: 14px 32px;
+  border-bottom: 2px solid #047857;
+  flex-wrap: wrap;
+}
+
+.ps-bidder-banner-left {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.ps-bidder-banner-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+}
+
+.ps-bidder-banner-name {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: white;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.ps-bidder-banner-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ps-bidder-banner-select {
+  padding: 7px 12px;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: 600;
+  min-width: 220px;
+  cursor: pointer;
+}
+.ps-bidder-banner-select option { background: #059669; color: white; }
+.ps-bidder-banner-select:focus { outline: none; border-color: white; }
+
+/* Print: banner shows company name prominently, selector hidden */
+@media print {
+  .ps-bidder-banner {
+    background: #059669 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    padding: 12px 24px;
+  }
+  .ps-bidder-banner-name { font-size: 1.4rem; }
+}
+
+/* ── Admin Unlock Overlay ── */
+.ps-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 50, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.ps-overlay-card {
+  background: white;
+  border-radius: 18px;
+  padding: 40px 44px;
+  max-width: 460px;
+  width: 100%;
+  box-shadow: 0 16px 60px rgba(10,15,50,0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.ps-overlay-icon {
+  color: #f59e0b;
+  margin-bottom: 4px;
+}
+
+.ps-overlay-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1a2b8c;
+  margin: 0;
+}
+
+.ps-overlay-body {
+  font-size: 0.88rem;
+  color: #4b5675;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.ps-overlay-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ── Document ── */
+.ps-document {
+  max-width: 1200px;
+  margin: 28px auto 60px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 40px rgba(26,43,140,0.10);
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.ps-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: linear-gradient(160deg, #0f1e6e 0%, #1a2b8c 60%, #233bc0 100%);
+  padding: 36px 44px;
+  flex-wrap: wrap;
+}
+
+.ps-header-left  { display: flex; align-items: center; gap: 20px; }
+.ps-header-right { flex-shrink: 0; }
+
+.ps-logo-area { flex-shrink: 0; }
+.ps-logo      { height: 56px; max-width: 180px; object-fit: contain; background: white; border-radius: 8px; padding: 6px 10px; }
+
+.ps-annexure-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.13em;
+  font-weight: 700;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  margin: 0 0 6px;
+}
+
+.ps-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
+}
+
+.ps-ref {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+}
+
+.ps-contract-months {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+}
+
+.ps-cm-label { font-size: 0.72rem; color: rgba(255,255,255,0.65); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.ps-cm-input {
+  width: 80px;
+  padding: 7px 10px;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  text-align: center;
+}
+.ps-cm-input:focus { outline: none; border-color: rgba(255,255,255,0.8); }
+
+/* ── Instruction box ── */
+.ps-instruction {
+  background: #fffde7;
+  border-left: 4px solid #f59e0b;
+  border-bottom: 1px solid #e8ecf0;
+  padding: 14px 32px;
+  font-size: 0.85rem;
+  color: #4b3700;
+  line-height: 1.6;
+}
+
+/* ── No bidders ── */
+.ps-no-bidders {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+/* ── Table wrapper ── */
+.ps-table-wrap {
+  overflow-x: auto;
+  padding: 24px 0 0;
+}
+
+/* ── Main table ── */
+.ps-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 900px;
+}
+
+/* Header row */
+.ps-table thead tr {
+  background: #1a2b8c;
+}
+.ps-table thead th {
+  color: white;
+  padding: 10px 10px;
+  font-weight: 600;
+  font-size: 0.76rem;
+  letter-spacing: 0.03em;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.1);
+  vertical-align: bottom;
+}
+.ps-th-desc { text-align: left; min-width: 220px; }
+.ps-th-unit { min-width: 100px; }
+.ps-th-qty  { width: 60px; }
+.ps-th-bidder, .ps-th-monthly { min-width: 140px; }
+.ps-th-action { width: 40px; }
+
+.ps-bidder-name { display: block; font-size: 0.82rem; font-weight: 700; }
+.ps-bidder-sub  { display: block; font-size: 0.68rem; opacity: 0.75; }
+
+/* Category header */
+.ps-cat-row { cursor: pointer; }
+.ps-cat-cell {
+  background: #e8edf7;
+  padding: 8px 16px;
+  font-size: 0.77rem;
+  font-weight: 700;
+  color: #1a2b8c;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1.5px solid #c5cde0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ps-cat-toggle { display: flex; align-items: center; color: #4b5675; }
+
+/* Data rows */
+.ps-row { border-bottom: 1px solid #e8ecf0; }
+.ps-row.even td { background: #f8f9fd; }
+.ps-row:hover td { background: #eef1fa; }
+
+.ps-row td { padding: 8px 10px; vertical-align: middle; border: 1px solid #e8ecf0; }
+
+.ps-cell-num    { text-align: center; color: #9ca3af; font-size: 0.78rem; width: 36px; }
+.ps-cell-desc   { min-width: 220px; }
+.ps-cell-unit   { min-width: 100px; }
+.ps-cell-qty    { text-align: center; width: 60px; }
+.ps-cell-rate   { text-align: right; min-width: 140px; }
+.ps-cell-monthly { text-align: right; min-width: 140px; font-weight: 600; color: #1a2b8c; }
+.ps-cell-action { text-align: center; width: 40px; }
+.ps-dash        { color: #d1d5db; }
+
+/* Inputs in table */
+.ps-desc-input {
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 0.84rem;
+  font-family: inherit;
+  background: transparent;
+  color: #1f2937;
+  transition: border 0.15s;
+}
+.ps-desc-input:hover, .ps-desc-input:focus { border-color: #c5cde0; background: white; outline: none; }
+
+.ps-unit-input {
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 0.8rem;
+  font-family: inherit;
+  background: transparent;
+  color: #4b5675;
+  transition: border 0.15s;
+}
+.ps-unit-input:hover, .ps-unit-input:focus { border-color: #c5cde0; background: white; outline: none; }
+
+.ps-qty-input {
+  width: 54px;
+  border: 1.5px solid #c5cde0;
+  border-radius: 5px;
+  padding: 4px 6px;
+  font-size: 0.84rem;
+  font-family: inherit;
+  text-align: center;
+  color: #1a2b8c;
+  font-weight: 600;
+}
+.ps-qty-input:focus { outline: none; border-color: #1a2b8c; }
+
+.ps-rate-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: flex-end;
+}
+.ps-rand { font-size: 0.78rem; color: #6b7280; font-weight: 600; }
+.ps-rate-input {
+  width: 110px;
+  border: 1.5px solid #c5cde0;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  text-align: right;
+  color: #1f2937;
+  background: #fafbff;
+  transition: border 0.15s;
+}
+.ps-rate-input:focus { outline: none; border-color: #2441cc; background: #f0f4ff; }
+.ps-rate-input::placeholder { color: #d1d5db; }
+
+/* Add row */
+.ps-add-row-tr td { padding: 10px 16px; background: #f9fafb; border-top: 1px dashed #c5cde0; }
+
+/* ── Footer totals ── */
+.ps-subtotal-row td, .ps-vat-row td, .ps-grand-row td, .ps-contract-row td {
+  padding: 10px 12px;
+  border: 1px solid #e0e5ef;
+  font-size: 0.86rem;
+}
+
+.ps-total-label { font-weight: 700; color: #4b5675; background: #f0f3fb !important; }
+
+.ps-subtotal-row td { background: #f8f9fd; }
+.ps-vat-row td      { background: #fffde7; }
+
+.ps-grand-row td    { background: #eff2ff; }
+.ps-grand-val       { font-weight: 700; color: #1a2b8c; text-align: right; }
+
+.ps-contract-row td { background: #1a2b8c !important; }
+.ps-contract-val    { font-weight: 800; color: white !important; text-align: right; font-size: 0.95rem; }
+
+.ps-subtotal-val, .ps-vat-val { text-align: right; }
+
+/* ── PPPFA block ── */
+.ps-pppfa-block {
+  padding: 24px 32px;
+  border-top: 2px solid #e0e5ef;
+}
+.ps-price-pts { text-align: center; font-weight: 700; color: #0e9f6e; }
+.ps-formula   { font-size: 0.76rem; color: #9ca3af; margin-top: 8px; font-style: italic; }
+
+/* ── Declarations ── */
+.ps-declarations {
+  padding: 24px 32px;
+  border-top: 2px solid #e0e5ef;
+}
+.ps-decl-intro { font-size: 0.84rem; color: #4b5675; line-height: 1.7; margin-bottom: 20px; }
+.ps-decl-grid  { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.ps-decl-card  {
+  border: 1.5px solid #d0d7e8;
+  border-radius: 10px;
+  padding: 18px;
+  background: #fafbff;
+}
+.ps-decl-company { font-weight: 700; color: #1a2b8c; margin: 0 0 14px; font-size: 0.88rem; }
+.ps-decl-row     { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; font-size: 0.78rem; color: #4b5675; font-weight: 600; }
+.ps-decl-line    { height: 1px; background: #c5cde0; margin-top: 16px; }
+.ps-decl-stamp   { height: 60px; border: 1.5px dashed #c5cde0; border-radius: 6px; margin-top: 6px; }
+
+/* ── Print ── */
+@media print {
+  body { background: white !important; margin: 0; }
+  .no-print, .ps-toolbar { display: none !important; }
+  .print-only { display: block !important; }
+
+  .ps-shell { background: white; }
+  .ps-document { max-width: 100%; margin: 0; border-radius: 0; box-shadow: none; }
+
+  .ps-header { background: #1a2b8c !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; page-break-after: avoid; }
+  .ps-table thead tr { background: #1a2b8c !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ps-contract-row td { background: #1a2b8c !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ps-cat-cell { background: #e8edf7 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .ps-table-wrap { overflow: visible; padding: 10px 0 0; }
+  .ps-table { page-break-inside: avoid; font-size: 0.78rem; }
+
+  .ps-desc-input, .ps-unit-input, .ps-qty-input, .ps-rate-input {
+    border: none !important; background: transparent !important; padding: 0 !important;
+    -webkit-appearance: none; appearance: none; font-size: inherit; font-family: inherit;
+  }
+
+  .ps-declarations { page-break-before: always; }
+  .ps-decl-grid { grid-template-columns: repeat(2, 1fr); }
+
+  @page { margin: 1.2cm; size: A3 landscape; }
+}
+
+.print-only { display: none; }

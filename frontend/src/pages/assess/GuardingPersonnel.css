@@ -1,0 +1,419 @@
+.gp-shell {
+  align-items: flex-start;
+  padding: 28px 24px;
+}
+
+.gp-wrapper {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Top bar */
+.gp-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.gp-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin: 0;
+}
+
+/* Bidder tabs */
+.gp-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.gp-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 18px;
+  border-radius: 10px 10px 0 0;
+  border: 1.5px solid var(--border);
+  border-bottom: none;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.18s;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+}
+
+.gp-tab.active {
+  background: white;
+  color: var(--primary);
+  border-color: var(--primary);
+  border-bottom-color: white;
+  box-shadow: 0 -4px 10px rgba(26,43,140,0.07);
+}
+
+.gp-tab-name {
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.gp-tab-score {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.gp-tab.active .gp-tab-score {
+  color: var(--primary);
+}
+
+/* Card */
+.gp-matrix-card {
+  padding: 0;
+  border-radius: 0 12px 12px 12px;
+  overflow: hidden;
+  border-top: 2px solid var(--primary);
+}
+
+.gp-matrix-scroll {
+  overflow-x: auto;
+}
+
+/* Table */
+.gp-matrix {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 780px;
+  font-size: 0.88rem;
+}
+
+/* Header */
+.gp-matrix thead tr {
+  background: rgba(26,43,140,0.07);
+  border-bottom: 2px solid var(--border);
+}
+
+.gp-crit-head {
+  min-width: 220px;
+  padding: 14px 16px;
+  text-align: left;
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gp-pts-head {
+  width: 70px;
+  text-align: center;
+  padding: 14px 8px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+
+.gp-lvl-head {
+  width: 100px;
+  text-align: center;
+  padding: 10px 6px;
+}
+
+.gp-lvl-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+}
+
+.gp-lvl-pct {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 2px;
+}
+
+.gp-weighted-head {
+  width: 90px;
+  text-align: center;
+  padding: 14px 8px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+
+/* Sub-section header row */
+.gp-section-header {
+  background: rgba(26,43,140,0.04);
+}
+
+.gp-section-label {
+  padding: 10px 16px;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: var(--primary);
+  letter-spacing: 0.01em;
+  border-top: 1.5px solid var(--border);
+  border-bottom: 1px solid rgba(26,43,140,0.1);
+}
+
+/* Data rows */
+.gp-row {
+  transition: background 0.15s;
+}
+.gp-row:hover { background: rgba(26,43,140,0.025); }
+.gp-row.even { background: rgba(0,0,0,0.013); }
+.gp-row.even:hover { background: rgba(26,43,140,0.025); }
+
+.gp-crit-cell {
+  padding: 12px 16px;
+  font-size: 0.87rem;
+  color: var(--text-main);
+  vertical-align: middle;
+}
+
+.gp-pts-cell {
+  padding: 12px 8px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--success);
+  font-size: 0.92rem;
+  vertical-align: middle;
+}
+
+.gp-radio-cell {
+  padding: 12px 6px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.gp-radio-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: rgba(255,255,255,0.7);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.gp-radio-label:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.gp-radio-label.checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.gp-radio {
+  opacity: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Show tick when checked */
+.gp-radio-label.checked::after {
+  content: '✓';
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.gp-weighted-cell {
+  padding: 12px 8px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--primary);
+  vertical-align: middle;
+}
+
+/* Footer total */
+.gp-total-row {
+  background: rgba(26,43,140,0.06);
+  border-top: 2.5px solid var(--primary);
+}
+
+.gp-total-label {
+  padding: 14px 16px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.gp-total-value {
+  padding: 14px 8px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+/* Actions */
+.gp-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* Print-only elements — hidden on screen */
+.print-only { display: none !important; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PRINT STYLES — scoring sheet
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media print {
+  body { background: white !important; margin: 0; }
+  @page { margin: 1.2cm; size: A4 landscape; }
+
+  /* Show print-only elements */
+  .print-only { display: flex !important; }
+
+  /* Bidder + evaluator meta row */
+  .gp-print-meta {
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.78rem;
+    color: #4b5675;
+    margin-top: 4px;
+    padding: 4px 0 6px;
+    border-bottom: 1px solid #c5cde0;
+  }
+  .gp-print-meta span { display: flex; align-items: center; gap: 4px; }
+  .gp-print-meta strong { color: #1a2b8c; }
+
+  .no-print,
+  .gp-actions,
+  .back-link,
+  .ev-bar,
+  .gp-tabs,
+  .ev-consolidated-notice,
+  .alert { display: none !important; }
+
+  /* Remove page chrome */
+  .page-shell,
+  .gp-shell { background: white !important; padding: 0 !important; }
+  .gp-wrapper { max-width: 100% !important; }
+
+  /* Top heading */
+  .gp-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #1a2b8c;
+  }
+  .gp-title {
+    font-size: 1.1rem !important;
+    font-weight: 900;
+    color: #1a2b8c;
+  }
+
+  /* Evaluator identity strip */
+  .ev-identity-strip {
+    background: #1a2b8c !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    padding: 6px 14px;
+  }
+
+  /* Card / matrix wrapper */
+  .gp-matrix-card {
+    border-radius: 0;
+    border-top: 2px solid #1a2b8c;
+    overflow: visible;
+  }
+  .gp-matrix-scroll { overflow: visible; }
+
+  /* Table */
+  .gp-matrix {
+    font-size: 0.75rem;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .gp-matrix thead tr {
+    background: #1a2b8c !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .gp-crit-head,
+  .gp-pts-head,
+  .gp-lvl-head,
+  .gp-weighted-head {
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    padding: 6px 8px;
+    font-size: 0.68rem;
+  }
+
+  /* Sub-section header */
+  .gp-section-header { background: rgba(26,43,140,0.08) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .gp-section-label { padding: 5px 10px; font-size: 0.78rem; }
+
+  /* Data rows */
+  .gp-row.even { background: #f7f8fd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .gp-crit-cell { padding: 5px 10px; font-size: 0.78rem; }
+  .gp-pts-cell,
+  .gp-weighted-cell { padding: 5px 6px; font-size: 0.78rem; }
+
+  /* Radio cells — print as ○/● */
+  .gp-radio-cell { padding: 5px 4px; }
+  .gp-radio-label {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid #aaa;
+    border-radius: 4px;
+    background: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+  .gp-radio-label.checked {
+    background: #1a2b8c !important;
+    border-color: #1a2b8c !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .gp-radio-label.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  /* Total row */
+  .gp-total-row { background: rgba(26,43,140,0.07) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .gp-total-label { padding: 6px 10px; font-size: 0.82rem; }
+  .gp-total-value { padding: 6px 8px; font-size: 1rem; }
+}

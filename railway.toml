@@ -1,0 +1,12 @@
+[build]
+  # Install root (backend) dependencies
+  nixPkgs = ["nodejs_20"]
+
+[deploy]
+  startCommand = "npm start"
+  healthcheckPath = "/api/tenders"
+
+[[services]]
+  name = "security-tender-evaluator"
+  protocol = "TCP"
+  internal_port = 5000

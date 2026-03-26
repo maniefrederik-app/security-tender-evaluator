@@ -1,0 +1,173 @@
+/* Per-bidder scoring matrix styles */
+
+.assess-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+  font-size: 0.9rem;
+}
+
+/* Header */
+.assess-matrix-table thead tr {
+  background: rgba(26, 43, 140, 0.06);
+  border-bottom: 2px solid var(--border);
+}
+
+.assess-matrix-table th {
+  padding: 14px 16px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+.criteria-col {
+  text-align: left;
+  min-width: 240px;
+}
+
+.max-col {
+  min-width: 52px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.bidder-col {
+  min-width: 140px;
+  text-align: center;
+  color: var(--text-main) !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bidder-col.top-bidder {
+  background: rgba(180, 83, 9, 0.06);
+  color: #92400e !important;
+  border-bottom: 2px solid #b45309;
+}
+
+.bidder-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-top: 3px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Body rows */
+.assess-matrix-table tbody tr:hover {
+  background: rgba(26, 43, 140, 0.03) !important;
+}
+
+.criteria-cell {
+  padding: 10px 16px;
+  font-weight: 500;
+  color: var(--text-main);
+  vertical-align: middle;
+}
+
+.max-cell {
+  padding: 10px 8px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  vertical-align: middle;
+}
+
+.score-cell {
+  padding: 8px 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.score-cell.top-bidder-cell {
+  background: rgba(180, 83, 9, 0.04);
+}
+
+.score-cell input {
+  width: 80px;
+  padding: 7px;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1.5px solid var(--border);
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.18s;
+}
+.score-cell input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(26, 43, 140, 0.1);
+  background: white;
+}
+
+/* Footer totals */
+.totals-row {
+  border-top: 2.5px solid var(--border);
+  background: rgba(26, 43, 140, 0.04);
+}
+
+.total-label {
+  padding: 16px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.total-cell {
+  padding: 12px 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.total-cell.top-total {
+  background: rgba(180, 83, 9, 0.07);
+}
+
+.total-score {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.total-cell.top-total .total-score {
+  color: #b45309;
+}
+
+.total-max {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.total-pct {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.total-bar-bg {
+  width: 100%;
+  height: 4px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 9999px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.total-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.4s ease;
+}
