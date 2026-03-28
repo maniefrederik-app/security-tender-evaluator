@@ -8,6 +8,28 @@ const app = express();
 app.use(cors({ origin: (origin, cb) => cb(null, true) }));
 app.use(express.json({ limit: '10mb' }));
 
+// Debug endpoint to test Supabase connection
+app.get('/api/debug', async (req, res) => {
+    const supabase = require('./config/supabase');
+    try {
+        const { data, error } = await supabase.from('tenders').select('*').limit(1);
+        res.json({
+            status: 'connected',
+            supabaseUrl: process.env.SUPABASE_URL ? 'SET' : 'NOT SET',
+            supabaseKey: process.env.SUPABASE_SERVICE_KEY ? 'SET' : 'NOT SET',
+            data,
+            error
+        });
+    } catch (err) {
+        res.json({
+            status: 'error',
+            supabaseUrl: process.env.SUPABASE_URL ? 'SET' : 'NOT SET',
+            supabaseKey: process.env.SUPABASE_SERVICE_KEY ? 'SET' : 'NOT SET',
+            error: err.message
+        });
+    }
+});
+
 // API Routes
 app.use('/api/tenders', require('./routes/tenders'));
 app.use('/api/bidders', require('./routes/bidders'));
