@@ -40,17 +40,16 @@ router.post('/', async (req, res) => {
 // Get all tenders
 router.get('/', async (req, res) => {
     try {
-        console.log('Fetching tenders, Supabase URL:', process.env.SUPABASE_URL ? 'set' : 'NOT SET');
+        console.log('Fetching tenders...');
         const { data, error } = await supabase
             .from('tenders')
             .select('*')
             .order('created_at', { ascending: false });
 
         if (error) {
-            console.error('Supabase error:', error);
-            throw error;
+            console.error('Supabase error:', JSON.stringify(error));
+            return res.status(500).json({ error: 'Database error', details: error.message, code: error.code });
         }
-        console.log('Fetched tenders:', data?.length || 0);
         res.json(data || []);
     } catch (err) {
         console.error('Route error:', err);
