@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API from '../api';
 
 export default function Bidders() {
   const [bidders, setBidders] = useState([]);

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Trophy, CheckCircle, XCircle, Calculator } from 'lucide-react';
+import API from '../api';
 
 export default function Evaluate() {
   const { tenderId } = useParams();
@@ -13,7 +14,6 @@ export default function Evaluate() {
   const [evaluating, setEvaluating] = useState(false);
   const [submittingBid, setSubmittingBid] = useState(false);
 
-  // Form State
   const [bidForm, setBidForm] = useState({
     bidder_id: '',
     total_price: '',
@@ -24,10 +24,10 @@ export default function Evaluate() {
   const fetchData = async () => {
     try {
       const [tenderRes, bidsRes, evalRes, biddersRes] = await Promise.all([
-        axios.get(`' + API + '/tenders/${tenderId}`),
-        axios.get(`' + API + '/tenders/${tenderId}/bids`),
-        axios.get(`' + API + '/evaluations/${tenderId}`),
-        axios.get(`' + API + '/bidders`)
+        axios.get(`${API}/tenders/${tenderId}`),
+        axios.get(`${API}/tenders/${tenderId}/bids`),
+        axios.get(`${API}/evaluations/${tenderId}`),
+        axios.get(`${API}/bidders`)
       ]);
       setTender(tenderRes.data);
       setBids(bidsRes.data);
@@ -48,9 +48,9 @@ export default function Evaluate() {
     e.preventDefault();
     setSubmittingBid(true);
     try {
-      await axios.post(`' + API + '/tenders/${tenderId}/bids`, bidForm);
+      await axios.post(`${API}/tenders/${tenderId}/bids`, bidForm);
       setBidForm({ bidder_id: '', total_price: '', functionality_score: '', psira_compliant: true });
-      fetchData(); // Refresh list
+      fetchData();
     } catch (err) {
       alert(err.response?.data?.error || 'Failed to submit bid');
     } finally {
@@ -61,8 +61,8 @@ export default function Evaluate() {
   const handleEvaluate = async () => {
     setEvaluating(true);
     try {
-      await axios.post(`' + API + '/evaluations/${tenderId}`);
-      fetchData(); // Refresh evaluations list
+      await axios.post(`${API}/evaluations/${tenderId}`);
+      fetchData();
     } catch (err) {
       alert(err.response?.data?.error || 'Evaluation failed');
     } finally {
@@ -85,7 +85,6 @@ export default function Evaluate() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '30px' }}>
-        {/* Left Col: Add Bid Form */}
         <div>
           <h2 style={{ fontSize: '1.2rem', marginBottom: '16px', color: 'var(--text-main)' }}>Submit New Bid</h2>
           <div className="glass-card">
@@ -146,7 +145,6 @@ export default function Evaluate() {
           </div>
         </div>
 
-        {/* Right Col: Evaluations & Bids */}
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h2 style={{ fontSize: '1.2rem', color: 'var(--text-main)' }}>Evaluation Matrix based on {tender.system_type}</h2>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Trophy, AlertCircle } from 'lucide-react';
+import API from '../api';
 
 export default function Dashboard() {
   const [tenders, setTenders] = useState([]);
