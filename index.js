@@ -14,23 +14,45 @@ app.use('/api/bidders', require('./routes/bidders'));
 app.use('/api/evaluations', require('./routes/evaluations'));
 app.use('/api/evaluators', require('./routes/evaluators'));
 
-// Serve static files from frontend/dist
-const staticPath = path.join(process.cwd(), 'frontend', 'dist');
-app.use(express.static(staticPath));
+// Serve static files - check multiple possible locations
+const possiblePaths = [
+    path.join(__dirname, 'frontend', 'dist'),
+    path.join(__dirname, 'dist'),
+    path.join(process.cwd(), 'frontend', 'dist')
+];
 
-// Serve index.html for all other routes (SPA support)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(staticPath, 'index.html'));
-});
+let staticPath = null;
+for (const p of possiblePaths) {
+    try {
+        require('fs').accessSync(p);
+        staticPath = p;
+        console.log('Using static path:', staticPath);
+        break;
+    } catch (e) {
+        // Path doesn't exist
+    }
+}
+
+if (staticPath) {
+    app.use(express.static(staticPath));
+    app.get('*', (req, res) => {
+        const indexPath = path.join(staticPath, 'index.html');
+        res.sendFile(indexPath);
+    });
+} else {
+    console.error('Could not find static files in any of:', possiblePaths);
+    app.get('*', (req, res) => {
+        res.status(500).send('Static files not found');
+    });
+}
 
 const PORT = process.env.PORT || 5000;
 
 // For local development only
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`✔ Server running on port ${PORT}`);
-  });
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Server running on port ${PORT}`);
+    });
 }
 
-// Export for Vercel
 module.exports = app;
