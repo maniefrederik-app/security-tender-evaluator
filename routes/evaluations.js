@@ -1,44 +1,66 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/database');
+const supabase = require('../config/supabase');
 const { evaluateTenderBids } = require('../utils/evaluation-logic');
+const { broadcastEvaluationUpdate, sendNotification } = require('../utils/realtime');
 
 // Trigger evaluation for a tender
 router.post('/:tenderId', async (req, res) => {
     const { tenderId } = req.params;
-    
+
     try {
+        // Run evaluation logic
         const results = await evaluateTenderBids(tenderId);
-        
-        // Save results to the database inside a transaction
-        await db.query('BEGIN');
-        
-        // Remove existing evaluations for this tender to allow re-evaluation
-        await db.query(`
-            DELETE FROM evaluations 
-            WHERE bid_id IN (SELECT id FROM bids WHERE tender_id = $1)
-        `, [tenderId]);
-        
-        for (const evalResult of results) {
-            await db.query(`
-                INSERT INTO evaluations (bid_id, price_score, bbbee_score, total_score, rank, disqualified, disqualification_reason)
-                VALUES ($1, $2, $3, $4, $5, $6, $7)
-            `, [
-                evalResult.bid_id, 
-                evalResult.price_score || null, 
-                evalResult.bbbee_score || null, 
-                evalResult.total_score || null, 
-                evalResult.rank || null, 
-                evalResult.disqualified, 
-                evalResult.reason || null
-            ]);
+
+        // Get all bid IDs for this tender first
+        const { data: bidsData } = await supabase
+            .from('bids')
+            .select('id')
+            .eq('tender_id', tenderId);
+
+        const bidIds = (bidsData || []).map(b => b.id);
+
+        // Delete existing evaluations for this tender's bids
+        if (bidIds.length > 0) {
+            await supabase
+                .from('evaluations')
+                .delete()
+                .in('bid_id', bidIds);
         }
-        
-        await db.query('COMMIT');
-        
+
+        // Insert new evaluations
+        const evaluationsToInsert = results.map(evalResult => ({
+            bid_id: evalResult.bid_id,
+            price_score: evalResult.price_score || null,
+            bbbee_score: evalResult.bbbee_score || null,
+            total_score: evalResult.total_score || null,
+            rank: evalResult.rank || null,
+            disqualified: evalResult.disqualified,
+            disqualification_reason: evalResult.reason || null
+        }));
+
+        if (evaluationsToInsert.length > 0) {
+            const { error } = await supabase
+                .from('evaluations')
+                .insert(evaluationsToInsert);
+
+            if (error) throw error;
+        }
+
+        // Broadcast to Firestore for real-time updates
+        try {
+            await broadcastEvaluationUpdate(tenderId, {
+                type: 'evaluation_complete',
+                results: results
+            });
+
+            await sendNotification(tenderId, `Evaluation completed for tender. ${results.filter(r => !r.disqualified).length} bids evaluated.`);
+        } catch (realtimeErr) {
+            console.warn('Firestore broadcast failed:', realtimeErr.message);
+        }
+
         res.json({ message: 'Evaluation completed successfully', results });
     } catch (err) {
-        await db.query('ROLLBACK');
         console.error(err);
         res.status(500).json({ error: 'Evaluation failed', details: err.message });
     }
@@ -47,18 +69,37 @@ router.post('/:tenderId', async (req, res) => {
 // Get evaluation results for a tender
 router.get('/:tenderId', async (req, res) => {
     const { tenderId } = req.params;
-    
+
     try {
-        const result = await db.query(`
-            SELECT e.*, b.total_price, br.company_name, br.bbbee_level
-            FROM evaluations e
-            JOIN bids b ON e.bid_id = b.id
-            JOIN bidders br ON b.bidder_id = br.id
-            WHERE b.tender_id = $1
-            ORDER BY e.rank ASC NULLS LAST
-        `, [tenderId]);
-        
-        res.json(result.rows);
+        const { data, error } = await supabase
+            .from('evaluations')
+            .select(`
+                *,
+                bid:bids(
+                    id,
+                    total_price,
+                    bidder:bidders(*)
+                )
+            `)
+            .in('bid_id', 
+                supabase
+                    .from('bids')
+                    .select('id')
+                    .eq('tender_id', tenderId)
+            )
+            .order('rank', { ascending: true, nullsFirst: false });
+
+        if (error) throw error;
+
+        // Flatten the nested data
+        const results = (data || []).map(evaluation => ({
+            ...evaluation,
+            total_price: evaluation.bid?.total_price,
+            company_name: evaluation.bid?.bidder?.company_name,
+            bbbee_level: evaluation.bid?.bidder?.bbbee_level
+        }));
+
+        res.json(results);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to fetch evaluation results' });

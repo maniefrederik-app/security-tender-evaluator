@@ -1,16 +1,36 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/database');
+const supabase = require('../config/supabase');
 
 // Create a new tender
 router.post('/', async (req, res) => {
     const { title, reference_number, closing_date, system_type, min_functionality_score } = req.body;
+    
+    if (!title || !reference_number || !closing_date || !system_type) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
     try {
-        const result = await db.query(
-            'INSERT INTO tenders (title, reference_number, closing_date, system_type, min_functionality_score) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [title, reference_number, closing_date, system_type, min_functionality_score || 70]
-        );
-        res.status(201).json(result.rows[0]);
+        const { data, error } = await supabase
+            .from('tenders')
+            .insert({
+                title,
+                reference_number,
+                closing_date,
+                system_type,
+                min_functionality_score: min_functionality_score || 70
+            })
+            .select()
+            .single();
+
+        if (error) {
+            if (error.code === '23505') {
+                return res.status(400).json({ error: 'Tender with this reference number already exists' });
+            }
+            throw error;
+        }
+
+        res.status(201).json(data);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to create tender', details: err.message });
@@ -20,8 +40,13 @@ router.post('/', async (req, res) => {
 // Get all tenders
 router.get('/', async (req, res) => {
     try {
-        const result = await db.query('SELECT * FROM tenders ORDER BY created_at DESC');
-        res.json(result.rows);
+        const { data, error } = await supabase
+            .from('tenders')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        res.json(data || []);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to fetch tenders' });
@@ -31,9 +56,16 @@ router.get('/', async (req, res) => {
 // Get single tender
 router.get('/:id', async (req, res) => {
     try {
-        const result = await db.query('SELECT * FROM tenders WHERE id = $1', [req.params.id]);
-        if (result.rows.length === 0) return res.status(404).json({ error: 'Tender not found' });
-        res.json(result.rows[0]);
+        const { data, error } = await supabase
+            .from('tenders')
+            .select('*')
+            .eq('id', req.params.id)
+            .single();
+
+        if (error || !data) {
+            return res.status(404).json({ error: 'Tender not found' });
+        }
+        res.json(data);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to fetch tender' });
@@ -44,18 +76,34 @@ router.get('/:id', async (req, res) => {
 router.post('/:id/bids', async (req, res) => {
     const tenderId = req.params.id;
     const { bidder_id, total_price, functionality_score, psira_compliant } = req.body;
-    
+
+    if (!bidder_id || !total_price || functionality_score === undefined) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
     try {
-        const result = await db.query(
-            'INSERT INTO bids (tender_id, bidder_id, total_price, functionality_score, psira_compliant) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [tenderId, bidder_id, total_price, functionality_score, psira_compliant !== undefined ? psira_compliant : true]
-        );
-        res.status(201).json(result.rows[0]);
+        const { data, error } = await supabase
+            .from('bids')
+            .insert({
+                tender_id: tenderId,
+                bidder_id,
+                total_price,
+                functionality_score,
+                psira_compliant: psira_compliant !== undefined ? psira_compliant : true
+            })
+            .select()
+            .single();
+
+        if (error) {
+            if (error.code === '23505') {
+                return res.status(400).json({ error: 'Bidder has already submitted a bid for this tender' });
+            }
+            throw error;
+        }
+
+        res.status(201).json(data);
     } catch (err) {
         console.error(err);
-        if (err.code === '23505') { // Unique constraint violation
-            return res.status(400).json({ error: 'Bidder has already submitted a bid for this tender.' });
-        }
         res.status(500).json({ error: 'Failed to submit bid', details: err.message });
     }
 });
@@ -64,14 +112,25 @@ router.post('/:id/bids', async (req, res) => {
 router.get('/:id/bids', async (req, res) => {
     const tenderId = req.params.id;
     try {
-        const result = await db.query(`
-            SELECT b.*, br.company_name, br.bbbee_level 
-            FROM bids b
-            JOIN bidders br ON b.bidder_id = br.id
-            WHERE b.tender_id = $1
-            ORDER BY b.submitted_at DESC
-        `, [tenderId]);
-        res.json(result.rows);
+        const { data, error } = await supabase
+            .from('bids')
+            .select(`
+                *,
+                bidder:bidders(*)
+            `)
+            .eq('tender_id', tenderId)
+            .order('submitted_at', { ascending: false });
+
+        if (error) throw error;
+        
+        // Flatten bidder data
+        const bids = (data || []).map(bid => ({
+            ...bid,
+            company_name: bid.bidder?.company_name,
+            bbbee_level: bid.bidder?.bbbee_level
+        }));
+        
+        res.json(bids);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to fetch bids' });
