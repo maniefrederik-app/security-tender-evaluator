@@ -18,8 +18,11 @@ app.use('/api/evaluations', require('./routes/evaluations'));
 app.use('/api/evaluators', require('./routes/evaluators'));
 
 // Serve static files
-const staticPath = path.join(process.cwd(), 'frontend', 'dist');
-app.use(express.static(staticPath));
+const staticPath = process.cwd();
+app.use(express.static(staticPath, { 
+    index: false,
+    dotfiles: 'allow'
+}));
 
 // SPA fallback
 app.use((req, res, next) => {
