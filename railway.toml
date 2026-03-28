@@ -1,6 +1,7 @@
 [build]
-  # Install root (backend) dependencies
+  # Install root (backend) dependencies - Updated build config
   nixPkgs = ["nodejs_20"]
+  builder = "NIXPACKS"
 
 [deploy]
   startCommand = "npm start"
