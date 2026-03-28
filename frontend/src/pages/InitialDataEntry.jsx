@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
+import API from '../api';
 
 const steps = ['Tender Details', 'Register Bidder'];
 
@@ -21,7 +22,7 @@ export default function InitialDataEntry() {
   });
 
   const fetchBidders = async () => {
-    const res = await axios.get('' + API + '/bidders');
+    const res = await axios.get(`${API}/bidders`);
     setBidders(res.data);
   };
 
@@ -30,7 +31,7 @@ export default function InitialDataEntry() {
   const handleTenderSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('' + API + '/tenders', tenderForm);
+      await axios.post(`${API}/tenders`, tenderForm);
       setMsg('Tender created! You may now register bidders below.');
       setStep(1);
     } catch (err) {
@@ -41,7 +42,7 @@ export default function InitialDataEntry() {
   const handleBidderSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('' + API + '/bidders', bidderForm);
+      await axios.post(`${API}/bidders`, bidderForm);
       setBidderForm({ company_name: '', registration_number: '', psira_number: '', bbbee_level: 1 });
       setMsg('Bidder registered successfully!');
       fetchBidders();
