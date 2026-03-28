@@ -15,17 +15,17 @@ app.use('/api/evaluations', require('./routes/evaluations'));
 app.use('/api/evaluators', require('./routes/evaluators'));
 
 // Serve static files from frontend/dist
-const frontendDist = path.join(__dirname, 'frontend', 'dist');
-app.use(express.static(frontendDist));
+const staticPath = path.join(process.cwd(), 'frontend', 'dist');
+app.use(express.static(staticPath));
 
 // Serve index.html for all other routes (SPA support)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(frontendDist, 'index.html'));
+  res.sendFile(path.join(staticPath, 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
 
-// For local development
+// For local development only
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`✔ Server running on port ${PORT}`);
