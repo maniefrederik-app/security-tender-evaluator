@@ -24,7 +24,7 @@ export default function Tenders() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post('' + API + '/tenders', formData);
+      await axios.post(`${API}/tenders`, formData);
       setMessage('Tender created successfully!');
       setTimeout(() => navigate('/'), 1500);
     } catch (err) {

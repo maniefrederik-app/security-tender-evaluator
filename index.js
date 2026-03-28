@@ -5,7 +5,10 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(cors({ origin: (origin, cb) => cb(null, true) }));
+app.use(cors({ 
+  origin: true,
+  credentials: true
+}));
 app.use(express.json({ limit: '10mb' }));
 
 // API Routes
