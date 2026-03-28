@@ -12,30 +12,60 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '10mb' }));
 
-// API Routes FIRST
+const MIME_TYPES = {
+    '.js': 'application/javascript',
+    '.css': 'text/css',
+    '.json': 'application/json',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.svg': 'image/svg+xml',
+    '.ico': 'image/x-icon'
+};
+
+// Serve static files explicitly
+const staticPath = process.cwd();
+app.get('/assets/*', (req, res) => {
+    const filePath = path.join(staticPath, req.path);
+    const ext = path.extname(filePath);
+    const mimeType = MIME_TYPES[ext] || 'text/plain';
+    
+    if (fs.existsSync(filePath)) {
+        res.setHeader('Content-Type', mimeType);
+        res.sendFile(filePath);
+    } else {
+        res.status(404).send('Not found');
+    }
+});
+
+app.get('/favicon.svg', (req, res) => {
+    const filePath = path.join(staticPath, 'favicon.svg');
+    if (fs.existsSync(filePath)) {
+        res.setHeader('Content-Type', 'image/svg+xml');
+        res.sendFile(filePath);
+    } else {
+        res.status(404).send('Not found');
+    }
+});
+
+app.get('/logo111.png', (req, res) => {
+    const filePath = path.join(staticPath, 'logo111.png');
+    if (fs.existsSync(filePath)) {
+        res.setHeader('Content-Type', 'image/png');
+        res.sendFile(filePath);
+    } else {
+        res.status(404).send('Not found');
+    }
+});
+
+// API Routes
 app.use('/api/tenders', require('./routes/tenders'));
 app.use('/api/bidders', require('./routes/bidders'));
 app.use('/api/evaluations', require('./routes/evaluations'));
 app.use('/api/evaluators', require('./routes/evaluators'));
 
-// Serve static files
-const staticPath = process.cwd();
-app.use(express.static(staticPath, {
-    setHeaders: (res, filePath) => {
-        if (filePath.endsWith('.js')) {
-            res.setHeader('Content-Type', 'application/javascript');
-        }
-    }
-}));
-
-// SPA fallback for non-API, non-asset requests
-app.use((req, res, next) => {
-    const ext = path.extname(req.path);
-    if (ext === '' || ext === '.html') {
-        res.sendFile(path.join(staticPath, 'index.html'));
-    } else {
-        next();
-    }
+// SPA fallback
+app.get('*', (req, res) => {
+    res.sendFile(path.join(staticPath, 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
