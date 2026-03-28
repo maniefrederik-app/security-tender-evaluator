@@ -26,8 +26,7 @@ app.use('/api/evaluators', require('./routes/evaluators'));
 // Serve built React frontend in production
 const frontendDist = path.join(__dirname, 'frontend', 'dist');
 app.use(express.static(frontendDist));
-app.use((req, res, next) => {
-  if (req.path.startsWith('/api')) return next();
+app.get('*', (req, res) => {
   res.sendFile(path.join(frontendDist, 'index.html'));
 });
 
