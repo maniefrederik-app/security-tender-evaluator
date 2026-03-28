@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AssessmentSection.css';
 import { ArrowLeft, Save, Trophy } from 'lucide-react';
+import API from '../api';
 
 /**
  * Generic per-bidder assessment matrix used by all 4 section pages.
@@ -25,7 +26,7 @@ export default function AssessmentSection({ title, storageKey, criteria }) {
 
   // Load bidders + any previously saved scores from localStorage
   useEffect(() => {
-    axios.get('' + API + '/bidders').then(res => {
+    axios.get(`${API}/bidders`).then(res => {
       setBidders(res.data);
       // Seed scores state for each bidder
       const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');

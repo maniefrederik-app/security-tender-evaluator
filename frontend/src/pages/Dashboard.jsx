@@ -14,7 +14,7 @@ export default function Dashboard() {
 
   const fetchTenders = async () => {
     try {
-      const res = await axios.get('' + API + '/tenders');
+      const res = await axios.get(`${API}/tenders`);
       setTenders(res.data);
     } catch (err) {
       console.error(err);

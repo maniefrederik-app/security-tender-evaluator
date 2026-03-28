@@ -21,7 +21,7 @@ export default function Bidders() {
 
   const fetchBidders = async () => {
     try {
-      const res = await axios.get('' + API + '/bidders');
+      const res = await axios.get(`${API}/bidders`);
       setBidders(res.data);
     } catch (err) {
       console.error(err);
@@ -37,7 +37,7 @@ export default function Bidders() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('' + API + '/bidders', formData);
+      await axios.post(`${API}/bidders`, formData);
       setMessage('Bidder registered successfully!');
       setFormData({ company_name: '', registration_number: '', psira_number: '', bbbee_level: 1 });
       fetchBidders();
