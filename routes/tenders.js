@@ -40,19 +40,16 @@ router.post('/', async (req, res) => {
 // Get all tenders
 router.get('/', async (req, res) => {
     try {
-        console.log('Fetching tenders...');
         const { data, error } = await supabase
             .from('tenders')
             .select('*')
             .order('created_at', { ascending: false });
 
         if (error) {
-            console.error('Supabase error:', JSON.stringify(error));
-            return res.status(500).json({ error: 'Database error', details: error.message, code: error.code });
+            return res.status(500).json({ error: 'Database error', details: error.message });
         }
         res.json(data || []);
     } catch (err) {
-        console.error('Route error:', err);
         res.status(500).json({ error: 'Failed to fetch tenders', details: err.message });
     }
 });
